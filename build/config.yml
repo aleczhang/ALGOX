@@ -5,10 +5,10 @@ version: '3'
 
 # This information is used to generate the build assets.
 info:
-  companyName: "My Company" # The name of the company
-  productName: "My Product" # The name of the application
-  productIdentifier: "com.mycompany.myproduct" # The unique product identifier
-  description: "A program that does X" # The application description
+  companyName: "ALGOX" # The name of the company
+  productName: "ALGOX" # The name of the application
+  productIdentifier: "com.algox.app" # The unique product identifier
+  description: "ALGOX" # The application description
   copyright: "(c) 2025, My Company" # Copyright text
   comments: "Some Product Comments" # Comments
   version: "0.0.1" # The application version
@@ -20,7 +20,7 @@ info:
 # Note: Keys under `ios` OVERRIDE values under `info` when set.
 # ios:
 #   # The iOS bundle identifier used in the generated Xcode project (CFBundleIdentifier)
-#   bundleID: "com.mycompany.myproduct"
+#   bundleID: "com.algox.app"
 #   # The display name shown under the app icon (CFBundleDisplayName/CFBundleName)
 #   displayName: "My Product"
 #   # The app version to embed in Info.plist (CFBundleShortVersionString/CFBundleVersion)
@@ -39,7 +39,6 @@ dev_mode:
     dir:
       - .git
       - node_modules
-      - frontend
       - bin
     file:
       - .DS_Store
@@ -48,21 +47,13 @@ dev_mode:
       - "*_test.go"
     watched_extension:
       - "*.go"
-      - "*.js" # Watch for changes to JS/TS files included using the //wails:include directive.
-      - "*.ts" # The frontend directory will be excluded entirely by the setting above.
+      - "*.js"   # the page's files in internal/gui/assets are embedded,
+      - "*.css"  # so a change to one rebuilds the app
+      - "*.html"
     git_ignore: true
   executes:
     - cmd: wails3 build DEV=true
       type: blocking
-    - cmd: wails3 task common:dev:frontend
-      type: background
-      # The standard frontend task waits up to 60s for HTTP 200 from
-      # FRONTEND_DEVSERVER_URL before starting the app. Override if needed;
-      # custom background commands can opt in with the same readiness block.
-      # readiness:
-      #   http: "http://localhost:5173/"
-      #   timeout: "60s"
-      #   interval: "200ms"
     - cmd: wails3 task run
       type: primary
       exit_policy: shutdown
